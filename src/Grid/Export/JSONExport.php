@@ -19,7 +19,8 @@ use APY\DataGridBundle\Grid\Grid;
  */
 class JSONExport extends Export
 {
-    protected $fileExtension = 'json';
+    protected ?string $fileExtension = 'json';
+    protected string $mimeType = "application/json";
 
     public function computeData(Grid $grid)
     {

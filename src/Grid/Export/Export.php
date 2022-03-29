@@ -30,9 +30,9 @@ abstract class Export implements ExportInterface, ContainerAwareInterface
 
     protected $fileName;
 
-    protected $fileExtension = null;
+    protected ?string $fileExtension = null;
 
-    protected $mimeType = 'application/octet-stream';
+    protected string $mimeType = 'application/octet-stream';
 
     protected $parameters = [];
 
@@ -74,7 +74,7 @@ abstract class Export implements ExportInterface, ContainerAwareInterface
     /**
      * Sets the Container associated with this Controller.
      *
-     * @param ContainerInterface $container A ContainerInterface instance
+     * @param ContainerInterface|null $container A ContainerInterface instance
      *
      * @return Export
      */
@@ -179,7 +179,7 @@ abstract class Export implements ExportInterface, ContainerAwareInterface
      *     )
      * )
      */
-    protected function getGridData($grid)
+    protected function getGridData(Grid $grid): array
     {
         $result = [];
 
@@ -194,7 +194,7 @@ abstract class Export implements ExportInterface, ContainerAwareInterface
         return $result;
     }
 
-    protected function getRawGridData($grid)
+    protected function getRawGridData($grid): array
     {
         $result = [];
         $this->grid = $grid;
@@ -230,7 +230,7 @@ abstract class Export implements ExportInterface, ContainerAwareInterface
      *      )
      * )
      */
-    protected function getFlatGridData($grid)
+    protected function getFlatGridData(Grid $grid): array
     {
         $data = $this->getGridData($grid);
 
@@ -242,7 +242,7 @@ abstract class Export implements ExportInterface, ContainerAwareInterface
         return array_merge($flatData, $data['rows']);
     }
 
-    protected function getFlatRawGridData($grid)
+    protected function getFlatRawGridData($grid): array
     {
         $data = $this->getRawGridData($grid);
 
@@ -256,8 +256,9 @@ abstract class Export implements ExportInterface, ContainerAwareInterface
 
     /**
      * @throws Exception
+     * @throws Throwable
      */
-    protected function getGridTitles()
+    protected function getGridTitles(): array
     {
         $titlesHTML = $this->renderBlock('grid_titles', ['grid' => $this->grid]);
 
@@ -288,21 +289,21 @@ abstract class Export implements ExportInterface, ContainerAwareInterface
         return $titles;
     }
 
-    protected function getRawGridTitles()
+    protected function getRawGridTitles(): array
     {
         $translator = $this->container->get('translator');
 
         $titles = [];
         foreach ($this->grid->getColumns() as $column) {
             if ($column->isVisible(true)) {
-                $titles[] = utf8_decode($translator->trans(/* @Ignore */$column->getTitle()));
+                $titles[] = utf8_decode($translator->trans($column->getTitle()));
             }
         }
 
         return $titles;
     }
 
-    protected function getGridRows()
+    protected function getGridRows(): array
     {
         $rows = [];
         foreach ($this->grid->getRows() as $i => $row) {
@@ -524,7 +525,7 @@ abstract class Export implements ExportInterface, ContainerAwareInterface
      *
      * @return string
      */
-    public function getTitle()
+    public function getTitle() : string
     {
         return $this->title;
     }

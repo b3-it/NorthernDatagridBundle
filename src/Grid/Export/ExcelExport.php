@@ -14,36 +14,56 @@ namespace APY\DataGridBundle\Grid\Export;
 
 use APY\DataGridBundle\Grid\Grid;
 
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\BaseWriter;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
 /**
  * Excel (This export produces a warning with new Office Excel).
  */
 class ExcelExport extends Export
 {
-    protected $fileExtension = 'xls';
+    protected ?string $fileExtension = 'xls';
 
-    protected $mimeType = 'application/vnd.ms-excel';
+    protected string $mimeType = 'application/vnd.ms-excel';
+
+    protected Spreadsheet $objPHPExcel;
+
+    public function __construct($title, $fileName = 'export', $params = [], $charset = 'UTF-8', $role = null)
+    {
+        parent::__construct($title, $fileName, $params, $charset, $role);
+        $this->objPHPExcel = new Spreadsheet;
+    }
 
     public function computeData(Grid $grid)
     {
-        $data = $this->getGridData($grid);
 
-        $this->content = '<table border=1>';
-        if (isset($data['titles'])) {
-            $this->content .= '<tr>';
-            foreach ($data['titles'] as $title) {
-                $this->content .= sprintf('<th>%s</th>', htmlentities($title, ENT_QUOTES));
+        $data = $this->getFlatGridData($grid);
+
+        $row = 1;
+        foreach ($data as $line) {
+            $column = 'A';
+            foreach ($line as $cell) {
+                $this->objPHPExcel->getActiveSheet()->SetCellValue($column . $row, $cell);
+
+                ++$column;
             }
-            $this->content .= '</tr>';
+            ++$row;
         }
 
-        foreach ($data['rows'] as $row) {
-            $this->content .= '<tr>';
-            foreach ($row as $cell) {
-                $this->content .= sprintf('<td>%s</td>', htmlentities($cell, ENT_QUOTES));
-            }
-            $this->content .= '</tr>';
-        }
+        $objWriter = $this->getWriter();
 
-        $this->content .= '</table>';
+        ob_start();
+
+        $objWriter->save('php://output');
+
+        $this->content = ob_get_contents();
+
+        ob_end_clean();
+    }
+
+    protected function getWriter(): BaseWriter
+    {
+        return new Xlsx($this->objPHPExcel);
     }
 }

@@ -22,9 +22,9 @@ use Symfony\Component\Serializer\Serializer;
  */
 class XMLExport extends Export
 {
-    protected $fileExtension = 'xml';
+    protected ?string $fileExtension = 'xml';
 
-    protected $mimeType = 'application/xml';
+    protected string $mimeType = 'application/xml';
 
     public function computeData(Grid $grid)
     {

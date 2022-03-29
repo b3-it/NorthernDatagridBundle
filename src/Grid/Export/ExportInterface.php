@@ -36,7 +36,7 @@ interface ExportInterface
      *
      * @return string
      */
-    public function getTitle();
+    public function getTitle(): string;
 
     /**
      * Get the export role.

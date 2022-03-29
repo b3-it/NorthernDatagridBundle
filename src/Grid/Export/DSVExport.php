@@ -19,11 +19,11 @@ use APY\DataGridBundle\Grid\Grid;
  */
 class DSVExport extends Export
 {
-    protected $fileExtension = null;
+    protected ?string $fileExtension = null;
 
-    protected $mimeType = 'application/octet-stream';
+    protected string $mimeType = 'application/octet-stream';
 
-    protected $delimiter = '';
+    protected string $delimiter = '';
 
     protected $withBOM = true;
 
