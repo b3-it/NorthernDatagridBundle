@@ -18,9 +18,6 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\BaseWriter;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
-/**
- * Excel (This export produces a warning with new Office Excel).
- */
 class ExcelExport extends Export
 {
     protected ?string $fileExtension = 'xls';

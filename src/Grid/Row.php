@@ -21,10 +21,10 @@ class Row
     protected array $fields;
 
     /** @var string */
-    protected string $class;
+    protected string $class = "";
 
     /** @var string */
-    protected string $color;
+    protected string $color = "";
 
     /** @var string|null */
     protected ?string $legend;
