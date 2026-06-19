@@ -35,7 +35,7 @@ abstract class Source implements DriverInterface
      */
     private $prepareRowCallback = null;
 
-    private array|object|null $data = null;
+    protected array|object|null $data = null;
 
     private array $items = [];
 
