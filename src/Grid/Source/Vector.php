@@ -33,7 +33,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class Vector extends Source
 {
-    protected array $data = [];
+    protected array|object|null $data = [];
 
     protected string|array|null $id = null;
 

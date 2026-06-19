@@ -121,6 +121,10 @@ abstract class Source implements DriverInterface
     {
         $items = [];
 
+        if (is_null($this->data)) {
+            return $items;
+        }
+
         foreach ($this->data as $key => $item) {
             foreach ($columns as $column) {
                 $fieldName  = $column->getField();
