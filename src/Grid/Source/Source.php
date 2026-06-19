@@ -117,7 +117,7 @@ abstract class Source implements DriverInterface
         return $this->data !== null;
     }
 
-    protected function getItemsFromData(Columns $columns): array
+    protected function getItemsFromData(Columns|ColumnsIterator|array $columns): array
     {
         $items = [];
 
